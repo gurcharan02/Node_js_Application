@@ -64,7 +64,7 @@ jobs:
         run: |
              pwd
              cd /home/ubuntu/actions-runner/_work/Node_js_Application/Node_js_Application
-             pm2 delete my-app
+             pm2 delete my-app || true
              pm2 start index.js --name "my-app" 
              pm2 status
              pm2 logs
