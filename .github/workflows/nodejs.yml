@@ -34,6 +34,6 @@ jobs:
         run: |
            pwd
            cd /home/ubuntu/actions-runner/_work/Node_js_Application/Node_js_Application
-           pm2 start index.js
+           pm2 restart index.js
            pm2 status
            pm2 logs
