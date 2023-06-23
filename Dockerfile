@@ -2,7 +2,7 @@
 FROM node:14
 
 # Set the working directory
-WORKDIR /app
+WORKDIR /home/ubuntu/app
 
 # Copy the code into the container
 COPY . /app
