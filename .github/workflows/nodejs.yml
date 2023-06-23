@@ -59,9 +59,7 @@ jobs:
 #       - name: Check application status
 #         run: pm2 status
 
-      - name: Stop application with PM2
-        run: |
-             pm2 stop all || true
+     
       - name: start application with PM2
         run: |
              pwd
