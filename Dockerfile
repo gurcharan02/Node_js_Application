@@ -5,7 +5,7 @@ FROM node:14
 WORKDIR /home/ubuntu/app
 
 # Copy the code into the container
-COPY . /app
+COPY . .
 # Install dependencies
 RUN npm install
 
@@ -13,7 +13,8 @@ RUN npm install
 RUN npm install -g pm2
 
 # Expose the port your application uses
-EXPOSE 3000
+EXPOSE 8000
 
 # Start the application with PM2
-CMD ["pm2-runtime", "start", "index.js", "--name", "my-node-app"]
+#CMD ["pm2-runtime", "start", "index.js", "--name", "my-node-app"]
+CMD pm2-runtime start index.js
