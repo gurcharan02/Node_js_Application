@@ -61,9 +61,8 @@ jobs:
           context: /home/ubuntu/actions-runner/_work/Node_js_Application/Node_js_Application
           push: false
           tags: my-node-app:latest
-          
-     
-     - name: check docker version
+   
+     - name: check docker images
        run: |           
            docker image
 
