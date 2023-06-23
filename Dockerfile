@@ -6,7 +6,6 @@ WORKDIR /home/ubuntu/app
 
 # Copy the code into the container
 COPY . /app
-
 # Install dependencies
 RUN npm install
 
