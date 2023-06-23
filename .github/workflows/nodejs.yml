@@ -28,6 +28,6 @@ jobs:
       - name: Start application with PM2
         run: |
            pwd
-           cd /home/ubuntu/actions-runner/_work/node_project/node_project
+           cd /home/ubuntu/actions-runner/_work/Node_js_Application/Node__js_Application
            pm2 restart index.js
            pm2 status
