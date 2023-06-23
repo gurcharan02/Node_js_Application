@@ -32,7 +32,7 @@ jobs:
              cd /home/ubuntu/actions-runner/_work/Node_js_Application/Node_js_Application
               pm2 delete all
              pm2 start index.js --name "my-node-app" 
-             pm2 log my-node-app
+             pm2 status
              
           
 
