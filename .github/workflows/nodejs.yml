@@ -62,11 +62,12 @@ jobs:
       - name: Stop application with PM2
         run: |
              pm2 stop all || true
-      - name: Restart application with PM2
+      - name: start application with PM2
         run: |
              pwd
              cd /home/ubuntu/actions-runner/_work/Node_js_Application/Node_js_Application
-             pm2 restart index.js
+             pm2 delete my-app
+             pm2 start index.js --name "my-app" 
              pm2 status
              pm2 logs
           
