@@ -14,3 +14,20 @@ jobs:
           sudo apt-get install -y nodejs
           node --version
           npm --version
+          
+  Installing_pm2_and_deploy_application:
+    needs: [build]
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: PM2 installation & Verify
+        run: |
+            sudo npm install -g pm2
+            pm2 --version || true
+      - name: Start application with PM2
+        run: |
+           pwd
+           cd /home/ubuntu/actions-runner/_work/node_project/node_project
+           pm2 restart index.js
+           pm2 status
