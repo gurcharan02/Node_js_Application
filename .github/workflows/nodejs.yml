@@ -25,6 +25,7 @@ jobs:
         run: |
             sudo npm install -g pm2
             pm2 --version || true
+            cd /home/ubuntu/actions-runner/_work/Node_js_Application/Node_js_Application
             pm2 delete all
       - name: start application with PM2
         run: |
