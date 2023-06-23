@@ -17,7 +17,9 @@ jobs:
       - name: Install docker
         run: |
             sudo apt-get update -y
-            sudo apt install docker.io -y        
+            sudo apt install docker.io -y 
+            sudo usermod -aG docker $USER
+
   Installing_pm2_and_deploy_application:
    needs: [build]
    runs-on: self-hosted
