@@ -60,7 +60,7 @@ jobs:
        with: 
           context: /home/ubuntu/actions-runner/_work/Node_js_Application/Node_js_Application
           push: false
-          tags: your-docker-image-name:latest
+          tags: my-node-app:latest
 
           
 
