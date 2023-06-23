@@ -25,6 +25,7 @@ jobs:
         run: |
             sudo npm install -g pm2
             pm2 --version || true
+            pm2 delete all
       - name: start application with PM2
         run: |
              pwd
