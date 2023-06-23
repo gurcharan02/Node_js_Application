@@ -43,6 +43,7 @@ jobs:
         if: steps.check_pm2.outputs.running != 'true'
         run: |
           cd /home/ubuntu/actions-runner/_work/Node_js_Application/Node_js_Application
+          pm2 delete my-app
           pm2 start index.js --name "my-app"
           pm2 save
       - name: Restart application with PM2
