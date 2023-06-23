@@ -38,13 +38,14 @@ jobs:
         run: |
           cd /home/ubuntu/actions-runner/_work/Node_js_Application/Node_js_Application
           pm2 start index.js --name "my-app"
-          pm2 save
+          pm2 status
+          pm2 logs
           
-      - name: Restart application with PM2
-        run: |
-           pwd
-           cd /home/ubuntu/actions-runner/_work/Node_js_Application/Node_js_Application
-           pm2 stop all || true
-           pm2 restart my-app &
-           pm2 status
-           pm2 logs
+#       - name: Restart application with PM2
+#         run: |
+#            pwd
+#            cd /home/ubuntu/actions-runner/_work/Node_js_Application/Node_js_Application
+#            pm2 stop all || true
+#            pm2 restart my-app &
+#            pm2 status
+#            pm2 logs
