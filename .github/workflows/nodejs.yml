@@ -38,6 +38,19 @@ jobs:
         pm2 start index.js --name "my-node-app"
     - name: Check application status
       run: pm2 status
+      
+      
+  create_Docker_image:
+   needs: [Installing_pm2_and_deploy_application]
+   runs-on: self-hosted
+   steps: 
+     - name: Checkout code
+       uses: actions/checkout@v3
+     - name: check docker version
+       run: |
+           cd ~
+           docker --version
+            docker image;
 
           
 
