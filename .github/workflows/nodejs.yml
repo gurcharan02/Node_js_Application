@@ -38,6 +38,7 @@ jobs:
         run: |
           cd /home/ubuntu/actions-runner/_work/Node_js_Application/Node_js_Application
           pm2 show my-app || echo "::set-output name=running::false"
+          
       - name: Start application with PM2
         if: steps.check_pm2.outputs.running != 'true'
         run: |
