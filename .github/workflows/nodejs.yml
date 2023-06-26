@@ -42,7 +42,7 @@ jobs:
       run: pm2 status
       
       
-  create_Docker_image:
+  Create_Docker_image:
    needs: [Installing_pm2_and_deploy_application]
    runs-on: self-hosted
    steps: 
@@ -54,7 +54,10 @@ jobs:
      - name: check docker images
        run: |           
            docker images
-           
+  Configure_aws:
+   needs: [Create_Docker_image]
+   runs-on: self-hosted
+   steps:      
      - name: Configure AWS credentials
        run: |
           aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
