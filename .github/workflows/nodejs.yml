@@ -59,7 +59,7 @@ jobs:
        uses: actions/checkout@v3
      - name: build image
        run: |           
-            sudo docker build /home/ubuntu/actions-runner/_work/Node_js_Application/Node_js_Application --tag my-node-app1
+            sudo docker build /home/ubuntu/actions-runner/_work/Node_js_Application/Node_js_Application --tag my-node-app
      - name: check docker images
        run: |           
            docker images
@@ -87,9 +87,10 @@ jobs:
        run: |
           aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 340704870584.dkr.ecr.us-west-2.amazonaws.com
           
-     - name: Pull Docker Image from Jfrog 
+     - name: Verify Docker Image and Tag  
        run: |
-          sudo docker pull arintech01.jfrog.io/my-jfrog-repository/my-node-app:latest
+          docker images
+          docker tag my-node-app:latest 340704870584.dkr.ecr.us-west-2.amazonaws.com/my-node-app:latest
           
           
           
