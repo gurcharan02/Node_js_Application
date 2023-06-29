@@ -9,7 +9,8 @@ env:
   ECS_SERVICE: my-node-app                # set this to your Amazon ECS service name
   ECS_CLUSTER: DEMO                 # set this to your Amazon ECS cluster name
   ECS_TASK_DEFINITION: .github/workflows/task-definition.json
-    
+  CONTAINER_NAME: node-app
+  
 jobs:
   build:
     runs-on: self-hosted
@@ -94,7 +95,15 @@ jobs:
      - name: Push Docker Image to ECR  
        run: |
           docker push 340704870584.dkr.ecr.us-west-2.amazonaws.com/my-node-app:latest
-          
+       
+     - name: Fill in the new image ID in the Amazon ECS task definition
+       id: task-def
+       uses: aws-actions/amazon-ecs-render-task-definition@v1
+       with:
+        task-definition: ${{ env.ECS_TASK_DEFINITION }}
+        container-name: ${{ env.CONTAINER_NAME }}
+        image: ${{ steps.build-image.outputs.image }}
+        
      - name: Deploy Amazon ECS task definition
        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
        with:
