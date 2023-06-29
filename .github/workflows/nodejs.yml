@@ -84,7 +84,7 @@ jobs:
           docker images
           docker tag my-node-app:latest 340704870584.dkr.ecr.us-west-2.amazonaws.com/my-node-app:latest
           
-     - name: Verify Docker Image and Tag  
+     - name: Push Docker Image to ECR  
        run: |
           docker push 340704870584.dkr.ecr.us-west-2.amazonaws.com/my-node-app:latest
           
