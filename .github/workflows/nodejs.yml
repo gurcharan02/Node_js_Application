@@ -89,7 +89,7 @@ jobs:
           
      - name: Pull Docker Image from Jfrog 
        run: |
-          docker pull arintech01.jfrog.io/my-jfrog-repository/my-node-app:latest
+          sudo docker pull arintech01.jfrog.io/my-jfrog-repository/my-node-app:latest
           
           
           
