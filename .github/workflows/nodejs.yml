@@ -83,8 +83,8 @@ jobs:
 #         role-session-name: Github
 #         aws-region: ${{ env.AWS_REGION }}
         
-#      - name: Login to Amazon ECR
-#        id: login-ecr
-#        uses: aws-actions/amazon-ecr-login@v1
+     - name: Login to Amazon ECR
+       run: |
+          aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 340704870584.dkr.ecr.us-west-2.amazonaws.com
           
 
