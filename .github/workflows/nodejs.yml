@@ -64,6 +64,18 @@ jobs:
        run: |           
            docker images
            
+  Pushing_Docker_image_in_jfrog:
+   needs: Create_Docker_image
+   runs-on: self-hosted
+   steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Push Docker image
+      run: |
+        docker login -umohit@arintech.in -p ${{ secrets.DOCKER_PASSWORD }} arintech01.jfrog.io
+        docker tag my-node-app:latest arintech01.jfrog.io/my-jfrog-repository/my-node-app:latest
+        docker push arintech01.jfrog.io/my-jfrog-repository/my-node-app:latest   
+        
   Configure_AWS_and_Deploy_Application_To_ECS:
    needs: [Create_Docker_image]
    runs-on: self-hosted
@@ -97,7 +109,7 @@ jobs:
        with:
         task-definition: ${{ env.ECS_TASK_DEFINITION }}
         container-name: ${{ env.CONTAINER_NAME }}
-        image: my-node-app:latest
+        image: arintech01.jfrog.io/my-jfrog-repository/my-node-app:latest  
         
      - name: Deploy Amazon ECS task definition
        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
