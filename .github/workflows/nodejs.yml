@@ -78,18 +78,18 @@ jobs:
           
      
         
-     - name: Login to Amazon ECR
-       run: |
-          aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 340704870584.dkr.ecr.us-west-2.amazonaws.com
+#      - name: Login to Amazon ECR
+#        run: |
+#           aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 340704870584.dkr.ecr.us-west-2.amazonaws.com
           
-     - name: Verify Docker Image and Tag  
-       run: |
-          docker images
-          docker tag my-node-app:latest 340704870584.dkr.ecr.us-west-2.amazonaws.com/my-node-app:latest
+#      - name: Verify Docker Image and Tag  
+#        run: |
+#           docker images
+#           docker tag my-node-app:latest 340704870584.dkr.ecr.us-west-2.amazonaws.com/my-node-app:latest
           
-     - name: Push Docker Image to ECR  
-       run: |
-          docker push 340704870584.dkr.ecr.us-west-2.amazonaws.com/my-node-app:latest
+#      - name: Push Docker Image to ECR  
+#        run: |
+#           docker push 340704870584.dkr.ecr.us-west-2.amazonaws.com/my-node-app:latest
        
      - name: Fill in the new image ID in the Amazon ECS task definition
        id: task-def
@@ -97,7 +97,7 @@ jobs:
        with:
         task-definition: ${{ env.ECS_TASK_DEFINITION }}
         container-name: ${{ env.CONTAINER_NAME }}
-        image: 340704870584.dkr.ecr.us-west-2.amazonaws.com/my-node-app
+        image: my-node-app:latest
         
      - name: Deploy Amazon ECS task definition
        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
