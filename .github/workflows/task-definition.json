@@ -5,8 +5,8 @@
             "name": "node-app",
             "image": "arintech01.jfrog.io/my-jfrog-repository/my-node-app:latest",
             "repositoryCredentials": {
-            "credentialsParameter": "arn:aws:secretsmanager:us-west-2:340704870584:secret:jfrog-20LiHk"
-        }
+            "credentialsParameter": "arn:aws:secretsmanager:us-west-2:340704870584:secret:jfrog1-0sR2xY"
+        },
             "cpu": 0,
             "portMappings": [
                 {
