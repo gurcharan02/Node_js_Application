@@ -63,7 +63,8 @@ jobs:
      - name: check docker images
        run: |           
            docker images
-  Configure_aws:
+           
+  Configure_AWS_and_Deploy_Application_To_ECS:
    needs: [Create_Docker_image]
    runs-on: self-hosted
    steps:      
