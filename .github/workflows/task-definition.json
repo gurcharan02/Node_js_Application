@@ -41,5 +41,10 @@
     ],
     "cpu": "1024",
     "memory": "2048",
-    "tags": []
+    "tags": [
+          { 
+         "key": "Name",
+         "value": "my-node-app"
+      }
+    ]
 }
