@@ -7,7 +7,7 @@ env:
   AWS_REGION: us-west-2                 # set this to your preferred AWS region, e.g. us-west-1
   ECR_REPOSITORY: my-node-app          # set this to your Amazon ECR repository name
   ECS_SERVICE: my-node-app                # set this to your Amazon ECS service name
-  ECS_CLUSTER: DEMO                 # set this to your Amazon ECS cluster name
+  ECS_CLUSTER: my-node                 # set this to your Amazon ECS cluster name
   ECS_TASK_DEFINITION: .github/workflows/task-definition.json
   CONTAINER_NAME: node-app
   
@@ -88,7 +88,16 @@ jobs:
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws configure set default.region us-west-2  # Set your desired region
           
-     
+Configure_ECS:
+   needs: [Configure_AWS_and_Deploy_Application_To_ECS]
+   runs-on: self-hosted
+   steps:      
+     - name: Create ECS Cluster
+       run: |
+          aws ecs create-cluster --cluster-name my-node
+          aws ecs register-task-definition --family my-node--container-definitions file:.github/workflows/task-definition.json
+
+
         
 #      - name: Login to Amazon ECR
 #        run: |
