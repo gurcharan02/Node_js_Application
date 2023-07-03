@@ -97,7 +97,7 @@ jobs:
           aws ecs create-cluster --cluster-name my-node
           aws ecs register-task-definition --cli-input-json file://.github/workflows/task-definition.json
           aws ecs list-task-definitions
-          aws ecs run-task --cluster default --task-definition node-app-deploy --count 1
+          aws ecs run-task --cluster my-node --task-definition node-app-deploy --count 1
           
 #      - name: Login to Amazon ECR
 #        run: |
