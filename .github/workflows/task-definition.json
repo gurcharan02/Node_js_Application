@@ -1,5 +1,5 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:us-west-2:340704870584:task-definition/node-app-deploy:1",
+   
     "containerDefinitions": [
         {
             "name": "node-app",
