@@ -95,6 +95,8 @@ jobs:
      - name: Create ECS Cluster
        run: |
           aws ecs create-cluster --cluster-name my-node
+          pwd
+          ls -al
           aws ecs register-task-definition --cli-input-json file://task-definition.json
 
 
