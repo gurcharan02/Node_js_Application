@@ -12,17 +12,17 @@
                     "containerPort": 3000,
                     "hostPort": 3000,
                     "protocol": "tcp"
-                },
+                }
             ],
             "essential": true,
             "environment": [],
             "environmentFiles": [],
             "mountPoints": [],
             "volumesFrom": [],
-            "ulimits": [],
+            "ulimits": []
         }
     ],
-    "family": "node-app-deploy-test",
+    "family": "node-app-deploy",
     "executionRoleArn": "arn:aws:iam::340704870584:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
     "volumes": [],
