@@ -99,7 +99,6 @@ jobs:
           ls -al
           aws ecs register-task-definition --cli-input-json file://.github/workflows/task-definition.json
 
-        
 #      - name: Login to Amazon ECR
 #        run: |
 #           aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 340704870584.dkr.ecr.us-west-2.amazonaws.com
