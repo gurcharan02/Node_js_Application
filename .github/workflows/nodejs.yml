@@ -95,7 +95,7 @@ jobs:
      - name: Create ECS Cluster
        run: |
           aws ecs create-cluster --cluster-name my-node
-          aws ecs register-task-definition --cli-input-json file:.github/workflows/task-definition.json
+          aws ecs register-task-definition --cli-input-json file:/home/ubuntu/actions-runner/_work/Node_js_Application/Node_js_Application/.github/workflows/task-definition.json
 
 
         
