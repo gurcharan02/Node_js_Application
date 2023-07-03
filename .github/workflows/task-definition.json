@@ -24,14 +24,14 @@
                 "logDriver": "awslogs",
                 "options": {
                     "awslogs-create-group": "true",
-                    "awslogs-group": "/ecs/node-app-deploy",
+                    "awslogs-group": "/ecs/node-app-deploy-test",
                     "awslogs-region": "us-west-2",
                     "awslogs-stream-prefix": "ecs"
                 }
             }
         }
     ],
-    "family": "node-app-deploy",
+    "family": "node-app-deploy-test",
     "executionRoleArn": "arn:aws:iam::340704870584:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
     "volumes": [],
