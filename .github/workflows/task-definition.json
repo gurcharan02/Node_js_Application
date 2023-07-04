@@ -22,7 +22,7 @@
             "ulimits": []
         }
     ],
-    "family": "node-app-deploy-test1",
+    "family": "node-app-deploy",
     "executionRoleArn": "arn:aws:iam::340704870584:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
     "volumes": [],
