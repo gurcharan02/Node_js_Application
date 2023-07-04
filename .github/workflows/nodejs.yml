@@ -116,7 +116,7 @@ jobs:
         
      - name: Create or update ECS service
        run: |
-        if [[ "$existing_service" == "my-node-service" ]]; then
+        if [[ $existing_service == "my-node-service" ]]; then
           echo "Service already exists. Performing update..."
           aws ecs update-service --cluster my-node --service my-node-service --desired-count 1 --task-definition node-app-deploy:$latest_revision
         else
