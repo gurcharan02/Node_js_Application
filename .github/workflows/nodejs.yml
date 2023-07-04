@@ -100,7 +100,7 @@ jobs:
           aws ecs describe-task-definition --task-definition node-app-deploy --query 'taskDefinition.revision'
           latest_revision=$(aws ecs describe-task-definition --task-definition node-app-deploy --query 'taskDefinition.revision')
           aws ecs describe-services --cluster my-node --services my-node-service
-          aws ecs update-service --cluster my-node --service my-node-service --task-definition node-app-deploy:$latest_revision 
+          aws ecs update-service --cluster my-node --service my-node-service --task-definition node-app-deploy:$latest_revision --desired-count 1
 
 
 
