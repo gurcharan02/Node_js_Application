@@ -105,7 +105,11 @@ jobs:
      - name: Featch_Public_IP_Address
        run: |
         task_id=$(aws ecs list-tasks --cluster my-node --family node-app-deploy --query 'taskArns[0]' --output text | awk -F / '{print $NF}')
-
+        task_arn=$(aws ecs describe-tasks --cluster my-node --tasks $task_id --query 'tasks[0].taskArn' --output text)
+        eni_number=$(aws ecs describe-tasks --cluster my-node --tasks $task_arn --query 'tasks[0].attachments[0].details[?name==`networkInterfaceId`].value' --output text)
+        echo $task_id
+        echo $task_arn
+        echo $eni_number
 
 
 #          aws ecs create-service --cluster my-node --service-name my-node-service --task-definition node-app-deploy:$latest_revision --desired-count 1 --launch-type "FARGATE" --network-configuration "awsvpcConfiguration={subnets=[subnet-0ab5a9b7768b9b147],securityGroups=[sg-0c51e41191fbc4535],assignPublicIp=ENABLED}"
