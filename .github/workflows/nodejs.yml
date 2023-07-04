@@ -122,7 +122,7 @@ jobs:
           else
             echo "Service does not exist. Creating new service..."
             aws ecs create-service --cluster my-node --service-name my-node-service --task-definition node-app-deploy:$latest_revision --desired-count 1 --launch-type "FARGATE" --network-configuration "awsvpcConfiguration={subnets=[subnet-0ab5a9b7768b9b147],securityGroups=[sg-0c51e41191fbc4535],assignPublicIp=ENABLED}"
-          fi
+            fi
     
     
      - name: Featch_Public_IP_Address
