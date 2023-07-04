@@ -91,7 +91,9 @@ jobs:
   Configure_ECS:
    needs: [Configure_AWS]
    runs-on: self-hosted
-   steps:           
+   steps:      
+     - name: Checkout code
+       uses: actions/checkout@v3
      - name: Create ECS Cluster
      - run: aws ecs create-cluster --cluster-name my-node
      - name: Create Task_Definition
