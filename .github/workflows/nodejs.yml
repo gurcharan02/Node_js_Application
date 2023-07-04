@@ -100,11 +100,13 @@ jobs:
        run: |
              aws ecs register-task-definition --cli-input-json file://.github/workflows/task-definition.json
              aws ecs list-task-definitions
+             
      - name: Fetch Revision number of Task_Definition
        run: |
         latest_revision=$(aws ecs describe-task-definition --task-definition node-app-deploy --query 'taskDefinition.revision')
         echo $latest_revision
         echo "Latest revision: $latest_revision"
+        
      - name: Check if ECS service exists
        id: check-service
        run: |
