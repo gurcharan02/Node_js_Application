@@ -76,7 +76,7 @@ jobs:
         docker tag my-node-app:latest arintech01.jfrog.io/my-jfrog-repository/my-node-app:latest
         docker push arintech01.jfrog.io/my-jfrog-repository/my-node-app:latest   
         
-  Configure_AWS_and_Deploy_Application_To_ECS:
+  Configure_AWS:
    needs: [Create_Docker_image]
    runs-on: self-hosted
    steps:      
@@ -89,19 +89,41 @@ jobs:
           aws configure set default.region us-west-2  # Set your desired region
           
   Configure_ECS:
-   needs: [Configure_AWS_and_Deploy_Application_To_ECS]
+   needs: [Configure_AWS]
    runs-on: self-hosted
    steps:           
      - name: Create ECS Cluster
+     - run: aws ecs create-cluster --cluster-name my-node
+     - name: Create Task_Definition
        run: |
-          aws ecs create-cluster --cluster-name my-node
-          aws ecs register-task-definition --cli-input-json file://.github/workflows/task-definition.json
-          aws ecs list-task-definitions
-          aws ecs describe-task-definition --task-definition node-app-deploy --query 'taskDefinition.revision'
-          latest_revision=$(aws ecs describe-task-definition --task-definition node-app-deploy --query 'taskDefinition.revision')
-          aws ecs describe-services --cluster my-node --services my-node-service
-          aws ecs update-service --cluster my-node --service my-node-service --task-definition node-app-deploy:$latest_revision --desired-count 1
+             aws ecs register-task-definition --cli-input-json file://.github/workflows/task-definition.json
+             aws ecs list-task-definitions
+     - name: Fetch_Revision_number_of_Task_Definition
+       run: |
+            aws ecs describe-task-definition --task-definition node-app-deploy --query 'taskDefinition.revision'
+            latest_revision=$(aws ecs describe-task-definition --task-definition node-app-deploy --query 'taskDefinition.revision')
+#      - name :
+#          aws ecs describe-services --cluster my-node --services my-node-service
+#           aws ecs update-service --cluster my-node --service my-node-service --task-definition node-app-deploy:$latest_revision --desired-count 1
 
+     - name: Check if ECS service exists
+       id: check-service
+       run: |
+          service_name="my-node-service"
+          existing_service=$(aws ecs describe-services --cluster my-node --services $service_name --query 'services[0].serviceName' --output text)
+          echo "::set-output name=service_exists::${{ steps.check-service.outputs.existence }}"
+
+     - name: Create or update ECS service
+       run: |
+          if [[ "${{ steps.check-service.outputs.service_exists }}" == "my-node-service" ]]; then
+            echo "Service already exists. Performing update..."
+            aws ecs update-service --cluster my-node --service my-node-service --desired-count 1 --task-definition node-app-deploy:$latest_revision
+          else
+            echo "Service does not exist. Creating new service..."
+            aws ecs create-service --cluster my-node --service-name my-node-service --task-definition node-app-deploy:$latest_revision --desired-count 1 --launch-type "FARGATE" --network-configuration "awsvpcConfiguration={subnets=[subnet-0ab5a9b7768b9b147],securityGroups=[sg-0c51e41191fbc4535],assignPublicIp=ENABLED}"
+          fi
+    
+    
      - name: Featch_Public_IP_Address
        run: |
         task_id=$(aws ecs list-tasks --cluster my-node --family node-app-deploy --query 'taskArns[0]' --output text | awk -F / '{print $NF}')
