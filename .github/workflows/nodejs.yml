@@ -108,8 +108,7 @@ jobs:
         task_arn=$(aws ecs describe-tasks --cluster my-node --tasks $task_id --query 'tasks[0].taskArn' --output text)
         eni_number=$(aws ecs describe-tasks --cluster my-node --tasks $task_arn --query 'tasks[0].attachments[0].details[?name==`networkInterfaceId`].value' --output text)
         public_ip=aws ec2 describe-network-interfaces --network-interface-id  $eni_number
-  
-        echo Public IP=$public_ip
+        echo $public_ip
        
 
 
