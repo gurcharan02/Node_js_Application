@@ -102,6 +102,10 @@ jobs:
           aws ecs describe-services --cluster my-node --services my-node-service
           aws ecs update-service --cluster my-node --service my-node-service --task-definition node-app-deploy:$latest_revision --desired-count 1
 
+     - name: Featch_Public_IP_Address
+       run: |
+        task_id=$(aws ecs list-tasks --cluster my-node --family node-app-deploy --query 'taskArns[0]' --output text | awk -F / '{print $NF}')
+
 
 
 #          aws ecs create-service --cluster my-node --service-name my-node-service --task-definition node-app-deploy:$latest_revision --desired-count 1 --launch-type "FARGATE" --network-configuration "awsvpcConfiguration={subnets=[subnet-0ab5a9b7768b9b147],securityGroups=[sg-0c51e41191fbc4535],assignPublicIp=ENABLED}"
