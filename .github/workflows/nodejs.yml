@@ -92,8 +92,7 @@ jobs:
    needs: [Configure_AWS]
    runs-on: self-hosted
    steps:      
-     - name: Checkout code
-       uses: actions/checkout@v3
+    
      - name: Create ECS Cluster
        run: |
           aws ecs create-cluster --cluster-name my-node
@@ -116,12 +115,14 @@ jobs:
         
      - name: Create or update ECS service
        run: |
-        if [[ "${{ steps.check-service.outputs.service_exists }}" == "my-node-service" ]]; then
+        if [[ $existing_service == "my-node-service" ]]; then
           echo "Service already exists. Performing update..."
+          latest_revision=$(aws ecs describe-task-definition --task-definition node-app-deploy --query 'taskDefinition.revision')
           echo "Latest revision: $latest_revision"
           aws ecs update-service --cluster my-node --service my-node-service --desired-count 1 --task-definition node-app-deploy:$latest_revision
         else
           echo "Service does not exist. Creating new service..."
+          latest_revision=$(aws ecs describe-task-definition --task-definition node-app-deploy --query 'taskDefinition.revision')
           echo "Latest revision: $latest_revision"
           aws ecs create-service --cluster my-node --service-name my-node-service --task-definition node-app-deploy:$latest_revision --desired-count 1 --launch-type "FARGATE" --network-configuration "awsvpcConfiguration={subnets=[subnet-0ab5a9b7768b9b147],securityGroups=[sg-0c51e41191fbc4535],assignPublicIp=ENABLED}"
         fi
