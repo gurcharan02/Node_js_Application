@@ -107,7 +107,9 @@ jobs:
         task_id=$(aws ecs list-tasks --cluster my-node --family node-app-deploy --query 'taskArns[0]' --output text | awk -F / '{print $NF}')
         task_arn=$(aws ecs describe-tasks --cluster my-node --tasks $task_id --query 'tasks[0].taskArn' --output text)
         eni_number=$(aws ecs describe-tasks --cluster my-node --tasks $task_arn --query 'tasks[0].attachments[0].details[?name==`networkInterfaceId`].value' --output text)
-        public_ip=aws ec2 describe-network-interfaces --network-interface-id  $eni_number
+        eni_id=$eni_number
+        public_ip=$(aws ec2 describe-network-interfaces --network-interface-ids $eni_id --query 'NetworkInterfaces[0].Association.PublicIp' --output text)
+
         echo $public_ip
        
 
