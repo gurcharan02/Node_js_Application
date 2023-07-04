@@ -29,55 +29,55 @@ jobs:
             sudo apt install docker.io -y 
             sudo usermod -aG docker $USER
 
-  Installing_pm2_and_deploy_application:
-   needs: [build]
-   runs-on: self-hosted
-   steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-    - name: PM2 installation & Verify
-      run: |
-        sudo npm install -g pm2
-        pm2 --version || true
-    - name: Stop existing PM2 processes
-      run: |
-        cd /home/ubuntu/actions-runner/_work/Node_js_Application/Node_js_Application
-        pm2 delete all || true
-    - name: Start application with PM2
-      run: |
-        cd /home/ubuntu/actions-runner/_work/Node_js_Application/Node_js_Application
-        pm2 start index.js --name "my-node-app"
-    - name: Check application status
-      run: pm2 status
+#   Installing_pm2_and_deploy_application:
+#    needs: [build]
+#    runs-on: self-hosted
+#    steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v3
+#     - name: PM2 installation & Verify
+#       run: |
+#         sudo npm install -g pm2
+#         pm2 --version || true
+#     - name: Stop existing PM2 processes
+#       run: |
+#         cd /home/ubuntu/actions-runner/_work/Node_js_Application/Node_js_Application
+#         pm2 delete all || true
+#     - name: Start application with PM2
+#       run: |
+#         cd /home/ubuntu/actions-runner/_work/Node_js_Application/Node_js_Application
+#         pm2 start index.js --name "my-node-app"
+#     - name: Check application status
+#       run: pm2 status
       
       
-  Create_Docker_image:
-   needs: [Installing_pm2_and_deploy_application]
-   runs-on: self-hosted
-   steps: 
-     - name: Checkout code
-       uses: actions/checkout@v3
-     - name: build image
-       run: |           
-            sudo docker build /home/ubuntu/actions-runner/_work/Node_js_Application/Node_js_Application --tag my-node-app
-     - name: check docker images
-       run: |           
-           docker images
+#   Create_Docker_image:
+#    needs: [Installing_pm2_and_deploy_application]
+#    runs-on: self-hosted
+#    steps: 
+#      - name: Checkout code
+#        uses: actions/checkout@v3
+#      - name: build image
+#        run: |           
+#             sudo docker build /home/ubuntu/actions-runner/_work/Node_js_Application/Node_js_Application --tag my-node-app
+#      - name: check docker images
+#        run: |           
+#            docker images
            
-  Pushing_Docker_image_in_jfrog:
-   needs: Create_Docker_image
-   runs-on: self-hosted
-   steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-    - name: Push Docker image
-      run: |
-        docker login -umohit@arintech.in -p ${{ secrets.DOCKER_PASSWORD }} arintech01.jfrog.io
-        docker tag my-node-app:latest arintech01.jfrog.io/my-jfrog-repository/my-node-app:latest
-        docker push arintech01.jfrog.io/my-jfrog-repository/my-node-app:latest   
+#   Pushing_Docker_image_in_jfrog:
+#    needs: Create_Docker_image
+#    runs-on: self-hosted
+#    steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v2
+#     - name: Push Docker image
+#       run: |
+#         docker login -umohit@arintech.in -p ${{ secrets.DOCKER_PASSWORD }} arintech01.jfrog.io
+#         docker tag my-node-app:latest arintech01.jfrog.io/my-jfrog-repository/my-node-app:latest
+#         docker push arintech01.jfrog.io/my-jfrog-repository/my-node-app:latest   
         
   Configure_AWS_and_Deploy_Application_To_ECS:
-   needs: [Create_Docker_image]
+#    needs: [Create_Docker_image]
    runs-on: self-hosted
    steps:      
      - name: Configure AWS credentials
@@ -107,9 +107,10 @@ jobs:
         task_id=$(aws ecs list-tasks --cluster my-node --family node-app-deploy --query 'taskArns[0]' --output text | awk -F / '{print $NF}')
         task_arn=$(aws ecs describe-tasks --cluster my-node --tasks $task_id --query 'tasks[0].taskArn' --output text)
         eni_number=$(aws ecs describe-tasks --cluster my-node --tasks $task_arn --query 'tasks[0].attachments[0].details[?name==`networkInterfaceId`].value' --output text)
-        echo $task_id
-        echo $task_arn
-        echo $eni_number
+        public_ip=aws ec2 describe-network-interfaces --network-interface-id  $eni_number
+  
+        echo Public IP=$public_ip
+       
 
 
 #          aws ecs create-service --cluster my-node --service-name my-node-service --task-definition node-app-deploy:$latest_revision --desired-count 1 --launch-type "FARGATE" --network-configuration "awsvpcConfiguration={subnets=[subnet-0ab5a9b7768b9b147],securityGroups=[sg-0c51e41191fbc4535],assignPublicIp=ENABLED}"
