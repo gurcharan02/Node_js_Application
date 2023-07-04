@@ -99,9 +99,8 @@ jobs:
           aws ecs list-task-definitions
           aws ecs describe-task-definition --task-definition node-app-deploy --query 'taskDefinition.revision'
           latest_revision=$(aws ecs describe-task-definition --task-definition node-app-deploy --query 'taskDefinition.revision')
-          aws ecs run-task --cluster my-node --task-definition node-app-deploy:$latest_revision
 
-#          aws ecs create-service --cluster my-node --service-name my-node-service --task-definition node-app-deploy: --desired-count 1 --launch-type "FARGATE" --network-configuration "awsvpcConfiguration={subnets=[subnet-0ab5a9b7768b9b147],securityGroups=[sg-0c51e41191fbc4535],assignPublicIp=ENABLED}"         
+          aws ecs create-service --cluster my-node --service-name my-node-service --task-definition node-app-deploy:$latest_revision --desired-count 1 --launch-type "FARGATE" --network-configuration "awsvpcConfiguration={subnets=[subnet-0ab5a9b7768b9b147],securityGroups=[sg-0c51e41191fbc4535],assignPublicIp=ENABLED}"         
 #      - name: Login to Amazon ECR
 #        run: |
 #           aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 340704870584.dkr.ecr.us-west-2.amazonaws.com
