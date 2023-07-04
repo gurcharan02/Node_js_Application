@@ -116,6 +116,8 @@ jobs:
 
      - name: Create or update ECS service
        run: |
+        aws ecs describe-task-definition --task-definition node-app-deploy --query 'taskDefinition.revision'
+            latest_revision=$(aws ecs describe-task-definition --task-definition node-app-deploy --query 'taskDefinition.revision')
           if [[ "${{ steps.check-service.outputs.service_exists }}" == "my-node-service" ]]; then
             echo "Service already exists. Performing update..."
             aws ecs update-service --cluster my-node --service my-node-service --desired-count 1 --task-definition node-app-deploy:$latest_revision
