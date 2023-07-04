@@ -105,7 +105,7 @@ jobs:
        run: |
         latest_revision=$(aws ecs describe-task-definition --task-definition node-app-deploy --query 'taskDefinition.revision')
         echo $latest_revision
-        
+        echo "Latest revision: $latest_revision"
      - name: Check if ECS service exists
        id: check-service
        run: |
@@ -116,11 +116,13 @@ jobs:
         
      - name: Create or update ECS service
        run: |
-        if [[ "my-node-service" == "my-node-service" ]]; then
+        if [[ "${{ steps.check-service.outputs.service_exists }}" == "my-node-service" ]]; then
           echo "Service already exists. Performing update..."
+          echo "Latest revision: $latest_revision"
           aws ecs update-service --cluster my-node --service my-node-service --desired-count 1 --task-definition node-app-deploy:$latest_revision
         else
           echo "Service does not exist. Creating new service..."
+          echo "Latest revision: $latest_revision"
           aws ecs create-service --cluster my-node --service-name my-node-service --task-definition node-app-deploy:$latest_revision --desired-count 1 --launch-type "FARGATE" --network-configuration "awsvpcConfiguration={subnets=[subnet-0ab5a9b7768b9b147],securityGroups=[sg-0c51e41191fbc4535],assignPublicIp=ENABLED}"
         fi
 #      - name: Fetch_Revision_number_of_Task_Definition
