@@ -128,6 +128,12 @@ jobs:
           echo "Latest revision: $latest_revision"
           aws ecs create-service --cluster my-node --service-name my-node-service --task-definition node-app-deploy:$latest_revision --desired-count 1 --launch-type "FARGATE" --network-configuration "awsvpcConfiguration={subnets=[subnet-0ab5a9b7768b9b147],securityGroups=[sg-0c51e41191fbc4535],assignPublicIp=ENABLED}"
         fi
+        
+     - name: Wait for the service to stabilize
+       run: |
+        echo "Waiting for service to stabilize..."
+        aws ecs wait services-stable --cluster my-node --services my-node-service
+
 #      - name: Fetch_Revision_number_of_Task_Definition
 #        run: |
 #             aws ecs describe-task-definition --task-definition node-app-deploy --query 'taskDefinition.revision'
