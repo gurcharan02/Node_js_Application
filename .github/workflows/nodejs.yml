@@ -104,14 +104,16 @@ jobs:
      - name: Fetch Revision number of Task_Definition
        run: |
         latest_revision=$(aws ecs describe-task-definition --task-definition node-app-deploy --query 'taskDefinition.revision')
-
+        echo $latest_revision
+        
      - name: Check if ECS service exists
        id: check-service
        run: |
         service_name="my-node-service"
         existing_service=$(aws ecs describe-services --cluster my-node --services $service_name --query 'services[0].serviceName' --output text)
         echo "::set-output name=service_exists::${{ steps.check-service.outputs.existence }}"
-
+        echo $existing_service
+        
      - name: Create or update ECS service
        run: |
         if [[ "${{ steps.check-service.outputs.service_exists }}" == "my-node-service" ]]; then
