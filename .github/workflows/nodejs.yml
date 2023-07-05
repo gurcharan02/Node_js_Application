@@ -133,31 +133,6 @@ jobs:
        run: |
         echo "Waiting for service to stabilize..."
         aws ecs wait services-stable --cluster my-node --services my-node-service
-
-#      - name: Fetch_Revision_number_of_Task_Definition
-#        run: |
-#             aws ecs describe-task-definition --task-definition node-app-deploy --query 'taskDefinition.revision'
-#             latest_revision=$(aws ecs describe-task-definition --task-definition node-app-deploy --query 'taskDefinition.revision')
-
-
-#      - name: Check if ECS service exists
-#        id: check-service
-#        run: |
-#           service_name="my-node-service"
-#           existing_service=$(aws ecs describe-services --cluster my-node --services $service_name --query 'services[0].serviceName' --output text)
-#           echo "::set-output name=service_exists::${{ steps.check-service.outputs.existence }}"
-
-#      - name: Create or update ECS service
-#        run: |
-#         aws ecs describe-task-definition --task-definition node-app-deploy --query 'taskDefinition.revision'
-#             latest_revision=$(aws ecs describe-task-definition --task-definition node-app-deploy --query 'taskDefinition.revision')
-#           if [[ "${{ steps.check-service.outputs.service_exists }}" == "my-node-service" ]]; then
-#             echo "Service already exists. Performing update..."
-#             aws ecs update-service --cluster my-node --service my-node-service --desired-count 1 --task-definition node-app-deploy:$latest_revision
-#           else
-#             echo "Service does not exist. Creating new service..."
-#             aws ecs create-service --cluster my-node --service-name my-node-service --task-definition node-app-deploy:$latest_revision --desired-count 1 --launch-type "FARGATE" --network-configuration "awsvpcConfiguration={subnets=[subnet-0ab5a9b7768b9b147],securityGroups=[sg-0c51e41191fbc4535],assignPublicIp=ENABLED}"
-#             fi
     
     
      - name: Featch_Public_IP_Address
@@ -169,38 +144,4 @@ jobs:
         public_ip=$(aws ec2 describe-network-interfaces --network-interface-ids $eni_id --query 'NetworkInterfaces[0].Association.PublicIp' --output text)
         echo $public_ip
        
-#      - name :
-#          aws ecs describe-services --cluster my-node --services my-node-service
-#           aws ecs update-service --cluster my-node --service my-node-service --task-definition node-app-deploy:$latest_revision --desired-count 1
 
-#          aws ecs create-service --cluster my-node --service-name my-node-service --task-definition node-app-deploy:$latest_revision --desired-count 1 --launch-type "FARGATE" --network-configuration "awsvpcConfiguration={subnets=[subnet-0ab5a9b7768b9b147],securityGroups=[sg-0c51e41191fbc4535],assignPublicIp=ENABLED}"
-          
-#      - name: Login to Amazon ECR
-#        run: |
-#           aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 340704870584.dkr.ecr.us-west-2.amazonaws.com
-          
-#      - name: Verify Docker Image and Tag  
-#        run: |
-#           docker images
-#           docker tag my-node-app:latest 340704870584.dkr.ecr.us-west-2.amazonaws.com/my-node-app:latest
-          
-#      - name: Push Docker Image to ECR  
-#        run: |
-#           docker push 340704870584.dkr.ecr.us-west-2.amazonaws.com/my-node-app:latest
-       
-#      - name: Fill in the new image ID in the Amazon ECS task definition
-#        id: task-def
-#        uses: aws-actions/amazon-ecs-render-task-definition@v1
-#        with:
-#         task-definition: .github/workflows/task-definition.json
-#         container-name: node-app
-#         image: arintech01.jfrog.io/my-jfrog-repository/my-node-app:latest  
-        
-#      - name: Deploy Amazon ECS task definition
-#        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-#        with:
-#         task-definition: ${{ steps.task-def.outputs.task-definition }}
-#         #service: ${{ env.ECS_SERVICE }}
-#         cluster: my-node
-#         wait-for-service-stability: true
-          
