@@ -72,9 +72,9 @@ jobs:
       uses: actions/checkout@v2
     - name: Push Docker image
       run: |
-        docker login -umohit@arintech.in -p ${{ secrets.DOCKER_PASSWORD }} arintech01.jfrog.io
-        docker tag my-node-app:latest arintech01.jfrog.io/my-jfrog-repository/my-node-app:latest
-        docker push arintech01.jfrog.io/my-jfrog-repository/my-node-app:latest   
+        docker login -ujohnalberto.dev@gmail.com arintech03.jfrog.io
+        docker tag my-node-app:latest arintech03.jfrog.io/docker-trial/my-node-app:latest
+        docker push arintech03.jfrog.io/docker-trial/my-node-app:latest   
         
   Configure_AWS:
    needs: [Create_Docker_image]
